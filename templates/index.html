@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Little Daemon</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<main>
+  <header><div><h1>Little Daemon</h1><p class="muted">Signed in as {{ username }}</p></div>
+    <form method="post" action="/logout"><button class="secondary" type="submit">Sign out</button></form>
+  </header>
+  <section class="card">
+    <h2>Status</h2>
+    <dl id="status"><dt>Loading</dt><dd>…</dd></dl>
+    <p id="status-error" class="error" hidden>Could not load status.</p>
+  </section>
+  <section class="card">
+    <h2>Actions</h2>
+    <p class="muted">Only predefined local actions can run here. Arbitrary commands are not accepted.</p>
+    <select id="action-select" aria-label="Configured action"></select>
+    <button id="run-action" type="button">Run action</button>
+    <pre id="action-output" hidden></pre>
+  </section>
+  <p class="muted">Listening on port {{ port }}. Heartbeat settings will be added next.</p>
+</main>
+<script>
+fetch('/api/status').then(response => {
+  if (!response.ok) throw new Error();
+  return response.json();
+}).then(status => {
+  const rows = {
+    Hostname: status.hostname,
+    'Local IP': status.local_ip,
+    'Public IP': status.public_ip || 'Unavailable',
+    Uptime: `${Math.floor(status.uptime_seconds / 60)} min`,
+    Checked: status.checked_at
+  };
+  document.querySelector('#status').innerHTML = Object.entries(rows)
+    .map(([key, value]) => `<dt>${key}</dt><dd><code>${value}</code></dd>`).join('');
+}).catch(() => { document.querySelector('#status-error').hidden = false; });
+
+const actionSelect = document.querySelector('#action-select');
+const actionOutput = document.querySelector('#action-output');
+fetch('/api/actions').then(response => response.json()).then(actions => {
+  actionSelect.innerHTML = actions.map(action =>
+    `<option value="${action.id}" data-type="${action.type}" data-confirm="${action.confirm}">${action.label}</option>`).join('');
+});
+document.querySelector('#run-action').addEventListener('click', async () => {
+  const option = actionSelect.selectedOptions[0];
+  if (!option) return;
+  if (option.dataset.confirm === 'true' && !confirm(`Run ${option.text}?`)) return;
+  const response = await fetch(`/api/actions/${encodeURIComponent(actionSelect.value)}`, {method: 'POST'});
+  const result = await response.json();
+  actionOutput.hidden = false;
+  actionOutput.textContent = `${result.ok ? 'Success' : 'Failed'} (exit ${result.exit_code ?? 'n/a'})\n\n${result.output}`;
+});
+</script>
+</body>
+</html>

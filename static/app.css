@@ -1,0 +1,17 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; background: #111827; color: #f3f4f6; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+main { width: min(680px, calc(100% - 32px)); padding: 24px 0; }
+header { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+h1 { margin: 0; } h2 { margin-top: 0; }
+.card { background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 24px; margin: 16px 0; }
+.login-card { width: min(360px, calc(100% - 80px)); }
+.muted { color: #9ca3af; }
+.error { color: #fca5a5; }
+label { display: block; margin: 16px 0; }
+input { display: block; box-sizing: border-box; width: 100%; margin-top: 6px; padding: 10px; color: inherit; background: #111827; border: 1px solid #4b5563; border-radius: 4px; }
+select { padding: 10px; margin-right: 8px; color: inherit; background: #111827; border: 1px solid #4b5563; border-radius: 4px; }
+pre { overflow: auto; padding: 12px; background: #111827; border-radius: 4px; white-space: pre-wrap; }
+button { cursor: pointer; padding: 10px 16px; color: #111827; background: #86efac; border: 0; border-radius: 4px; font-weight: 600; }
+button.secondary { color: #f3f4f6; background: #374151; }
+dl { display: grid; grid-template-columns: minmax(110px, 1fr) 2fr; gap: 10px 16px; }
+dt { color: #9ca3af; } dd { margin: 0; } code { color: #86efac; }

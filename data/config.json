@@ -1,0 +1,15 @@
+{
+  "actions": [
+    {"id": "machine_info", "label": "Machine info", "type": "builtin"},
+    {"id": "local_ip", "label": "Current local IP", "type": "builtin"},
+    {"id": "public_ip", "label": "Current public IP", "type": "builtin"},
+    {"id": "disk_free", "label": "Disk free space", "type": "builtin"},
+    {"id": "memory", "label": "Memory status", "type": "builtin"},
+    {"id": "uptime", "label": "Windows uptime", "type": "builtin"},
+    {"id": "network_config", "label": "Network configuration", "type": "builtin"},
+    {"id": "running_processes", "label": "Running processes", "type": "builtin"},
+    {"id": "listening_ports", "label": "Listening TCP ports", "type": "builtin"},
+    {"id": "restart_pc", "label": "Restart PC in 30 seconds", "type": "builtin", "confirm": true},
+    {"id": "shutdown_pc", "label": "Shut down PC in 30 seconds", "type": "builtin", "confirm": true}
+  ]
+}
